@@ -1,7 +1,7 @@
 {
-  "name": "@parcelvoy/js-sdk",
+  "name": "@zwolly/js-sdk",
   "version": "0.0.0",
-  "description": "Parcelvoy Javascript SDK for collecting events",
+  "description": "Zwolly Javascript SDK for collecting events",
   "scripts": {
     "package:build": "rimraf lib/ && npm run package:build:esm && npm run package:build:cjs",
     "package:build:esm": "tsc --project ./tsconfig.module.json",
@@ -24,7 +24,7 @@
     ]
   },
   "keywords": [
-    "parcelvoy",
+    "zwolly",
     "js"
   ],
   "author": "Chris Anderson",

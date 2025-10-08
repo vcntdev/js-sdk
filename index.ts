@@ -135,36 +135,36 @@ export class BrowserClient extends Client {
     }
 }
 
-export class Parcelvoy {
+export class Zwolly {
     static instance?: BrowserClient = undefined
 
     static initialize(props: ClientProps) {
-        Parcelvoy.instance = new BrowserClient(props)
+        Zwolly.instance = new BrowserClient(props)
     }
 
     static async track(props: TrackProps) {
-        return await Parcelvoy.instance?.track(props)
+        return await Zwolly.instance?.track(props)
     }
 
     static async events(props: EventProps[]) {
-        return await Parcelvoy.instance?.events(props)
+        return await Zwolly.instance?.events(props)
     }
 
     static async identify(props: IdentifyProps) {
-        return await Parcelvoy.instance?.identify(props)
+        return await Zwolly.instance?.identify(props)
     }
 
     static async alias(props: AliasProps) {
-        return await Parcelvoy.instance?.alias(props)
+        return await Zwolly.instance?.alias(props)
     }
 }
 
 
-// If running in a browser, expose Parcelvoy from the window object
+// If running in a browser, expose Zwolly from the window object
 declare global {
-    interface Window { Parcelvoy: any; }
+    interface Window { Zwolly: any; }
 }
 
 if (typeof window !== 'undefined') {
-    window.Parcelvoy = Parcelvoy
+    window.Zwolly = Zwolly
 }
