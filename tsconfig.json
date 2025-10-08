@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "downlevelIteration": true,
+    "moduleResolution": "bundler",
     "module": "commonjs",
     "lib": [
       "dom",
@@ -16,5 +17,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "ignoreDeprecations": "6.0"
   }
 }
