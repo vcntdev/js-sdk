@@ -6,8 +6,8 @@ on:
       - "v*.*.*"
 
 jobs:
-  build-package:
-    name: "Publish to GitHub Packages"
+  release-package:
+    name: "Release Packages"
     runs-on: ubuntu-latest
     permissions:
       contents: read
