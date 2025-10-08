@@ -1,3 +1,5 @@
+type JSONValue = string | number | boolean | null | { [key: string]: JSONValue } | JSONValue[]
+
 type ClientProps = {
     apiKey: string
     urlEndpoint: string
@@ -7,14 +9,14 @@ type TrackProps = {
     event: string
     anonymousId?: string
     externalId?: string
-    properties: Record<string, any>
+    properties: Record<string, JSONValue>
 }
 
 type EventProps = {
     name: string
     anonymousId?: string
     externalId?: string
-    properties?: Record<string, any>
+    properties?: Record<string, JSONValue>
 }
 
 type IdentifyProps = {
@@ -24,7 +26,7 @@ type IdentifyProps = {
     email?: string
     timezone?: string
     locale?: string
-    traits: Record<string, any>
+    traits: Record<string, JSONValue>
 }
 
 type AliasProps = {
@@ -46,7 +48,7 @@ export class Client {
     }
 
     async events(props: EventProps[]) {
-        return await this.#request('events', props.map(({ properties: data, ...rest }) => ({ ...rest, data })))
+        return await this.#request('events', props.map(({ properties: data, ...rest }) => ({ ...rest, data } as Record<string, JSONValue>)))
     }
 
     async identify({ traits: data, ...props }: IdentifyProps) {
@@ -57,14 +59,14 @@ export class Client {
         return await this.#request('identify', props)
     }
 
-    #mapKeys(value: Record<string, any> | Record<string, any>[]): Record<string, any> | Record<string, any>[] {
+    #mapKeys(value: Record<string, JSONValue> | Record<string, JSONValue>[]): Record<string, JSONValue> | Record<string, JSONValue>[] {
         if (Array.isArray(value)) {
-            return value.map((item) => this.#mapKeys(item));
+            return value.map((item) => this.#mapKeys(item)) as Record<string, JSONValue>[];
         }
 
         const camelToUnderscore = (key: string) => key.replace(/([A-Z])/g, "_$1").toLowerCase()
 
-        const newObj: Record<string, any> = {}
+        const newObj: Record<string, JSONValue> = {}
         for (const key in value) {
             newObj[camelToUnderscore(key)] = value[key]
         }
@@ -72,7 +74,7 @@ export class Client {
         return newObj
     }
 
-    async #request(path: string, data: Record<string, any>) {
+    async #request(path: string, data: Record<string, JSONValue> | Record<string, JSONValue>[]) {
         const request = await fetch(`${this.#urlEndpoint}/client/${path}`, {
             method: 'POST',
             headers: {
@@ -162,7 +164,7 @@ export class Zwolly {
 
 // If running in a browser, expose Zwolly from the window object
 declare global {
-    interface Window { Zwolly: any; }
+    interface Window { Zwolly: typeof Zwolly; }
 }
 
 if (typeof window !== 'undefined') {
