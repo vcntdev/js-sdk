@@ -16,11 +16,11 @@ jobs:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: ${{ vars.PNPM_VERSION }}
       - name: Set-up Node
         uses: actions/setup-node@v5
         with:
-          node-version: ${{ env.NODEJS_VERSION }}
+          node-version: ${{ vars.NODEJS_VERSION }}
           cache: 'pnpm'
           registry-url: https://registry.npmjs.org
       - run: pnpm install
