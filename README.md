@@ -1,27 +1,22 @@
-<p align="center">
-  <img width="400" alt="Zwolly Logo" src=".github/assets/logo-light.png#gh-light-mode-only" />
-  <img width="400" alt="Zwolly Logo" src=".github/assets/logo-dark.png#gh-dark-mode-only" />
-</p>
-
-# Zwolly JS SDK
+# Lunogram JS SDK
 
 ## Installation
 To install the SDK, use Yarn, npm, or a script tag:
 
 - npm
 ```
-npm install @zwolly/js-sdk
+npm install @lunogram/js-sdk
 ```
 
 - Yarn
 ```
-yarn add @zwolly/js-sdk
+yarn add @lunogram/js-sdk
 ```
 
 script tag
 
 ```
-<script src="https://unpkg.com/@zwolly/js-sdk/lib/esm/index.js"></script>
+<script src="https://unpkg.com/@lunogram/js-sdk/lib/esm/index.js"></script>
 ```
 
 ## Usage
@@ -30,14 +25,14 @@ The SDK can be used both on the server or in the web browser. The main differenc
 ### Initialize
 Before using any methods, the library must be initialized with an API key and URL endpoint.
 
-If you aren't accessing the SDK via script tag, start by importing the Zwolly SDK:
+If you aren't accessing the SDK via script tag, start by importing the Lunogram SDK:
 ```typescript
 
 // 
-const { Client /** or BrowserClient */ } = require('@zwolly/js-sdk')
+const { Client /** or BrowserClient */ } = require('@lunogram/js-sdk')
 
 // Or
-import { Client /** or BrowserClient */ } from '@zwolly/js-sdk'
+import { Client /** or BrowserClient */ } from '@lunogram/js-sdk'
 ```
 
 Then you can initialize the library:
@@ -45,19 +40,19 @@ Then you can initialize the library:
 // Node
 const client = new Client({
     apiKey: "XXX-XXX",
-    urlEndpoint: "https://app.zwolly.com/api"
+    urlEndpoint: "https://app.lunogram.com/api"
 })
 
 // Browser
 const client = new BrowserClient({
     apiKey: "XXX-XXX",
-    urlEndpoint: "https://app.zwolly.com/api"
+    urlEndpoint: "https://app.lunogram.com/api"
 })
 
 // Or global script
-Zwolly.initialize({
+Lunogram.initialize({
     apiKey: "XXX-XXX",
-    urlEndpoint: "https://app.zwolly.com/api"
+    urlEndpoint: "https://app.lunogram.com/api"
 })
 ```
 
@@ -74,7 +69,7 @@ client.identify({
 })
 
 // Or global script
-Zwolly.identify({
+Lunogram.identify({
     externalId: "XXX-XXX"
     phone: "+1234567890"
     email: "email@email.com"
@@ -95,7 +90,7 @@ client.track({
 })
 
 // Or global script
-Zwolly.track({
+Lunogram.track({
     event: "Tapped Button",
     traits: {
         "Key": "Value"

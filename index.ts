@@ -137,36 +137,36 @@ export class BrowserClient extends Client {
     }
 }
 
-export class Zwolly {
+export class Lunogram {
     static instance?: BrowserClient = undefined
 
     static initialize(props: ClientProps) {
-        Zwolly.instance = new BrowserClient(props)
+        Lunogram.instance = new BrowserClient(props)
     }
 
     static async track(props: TrackProps) {
-        return await Zwolly.instance?.track(props)
+        return await Lunogram.instance?.track(props)
     }
 
     static async events(props: EventProps[]) {
-        return await Zwolly.instance?.events(props)
+        return await Lunogram.instance?.events(props)
     }
 
     static async identify(props: IdentifyProps) {
-        return await Zwolly.instance?.identify(props)
+        return await Lunogram.instance?.identify(props)
     }
 
     static async alias(props: AliasProps) {
-        return await Zwolly.instance?.alias(props)
+        return await Lunogram.instance?.alias(props)
     }
 }
 
 
-// If running in a browser, expose Zwolly from the window object
+// If running in a browser, expose Lunogram from the window object
 declare global {
-    interface Window { Zwolly: typeof Zwolly; }
+    interface Window { Lunogram: typeof Lunogram; }
 }
 
 if (typeof window !== 'undefined') {
-    window.Zwolly = Zwolly
+    window.Lunogram = Lunogram
 }

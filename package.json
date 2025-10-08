@@ -1,7 +1,7 @@
 {
-  "name": "@zwolly/js-sdk",
+  "name": "@lunogram/js-sdk",
   "version": "0.0.0",
-  "description": "Zwolly Javascript SDK for collecting events",
+  "description": "Lunogram Javascript SDK for collecting events",
   "scripts": {
     "build": "rimraf lib/ && pnpm run build:esm && pnpm run build:cjs",
     "build:esm": "tsc --project ./tsconfig.module.json",
@@ -26,7 +26,7 @@
     ]
   },
   "keywords": [
-    "zwolly",
+    "lunogram",
     "js"
   ],
   "contributors": [
