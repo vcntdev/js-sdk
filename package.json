@@ -7,7 +7,8 @@
     "build:esm": "tsc --project ./tsconfig.module.json",
     "build:cjs": "tsc --project ./tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "publish": "pnpm run build && pnpm version $npm_config_tag --no-git-tag-version && pnpm pack && pnpm publish --tag=latest --access public"
+    "release:github": "pnpm publish --no-git-checks --registry=https://npm.pkg.github.com",
+    "release:npm": "pnpm publish --no-git-checks --access public --registry=https://registry.npmjs.org"
   },
   "types": "./lib/cjs/index.d.ts",
   "main": "./lib/cjs/index.js",

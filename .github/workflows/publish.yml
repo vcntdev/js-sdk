@@ -23,7 +23,22 @@ jobs:
           node-version: ${{ vars.NODEJS_VERSION }}
           cache: 'pnpm'
           registry-url: https://registry.npmjs.org
-      - run: pnpm install
-      - run: pnpm run publish --tag=$(echo ${GITHUB_REF_NAME:1})
+      - name: Sync package.json version with tag
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "Setting version to $VERSION"
+          pnpm version $VERSION --no-git-tag-version
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build Package
+        run: |
+          pnpm run build
+          pnpm pack
+      - name: Publish to GitHub Packages
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm run release:github
+      - name: Publish to npmjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm run release:npm

@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
     "downlevelIteration": true,
-    "moduleResolution": "node",
     "module": "commonjs",
-    "lib": ["dom", "esnext", "dom.iterable"],
+    "lib": [
+      "dom",
+      "esnext",
+      "dom.iterable"
+    ],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
