@@ -1,3 +1,5 @@
+const DefaultEndpoint = 'https://uplink.lab.lunogram.io/api'
+
 type JSONValue = string | number | boolean | null | { [key: string]: JSONValue } | JSONValue[]
 
 type ClientProps = {
@@ -40,7 +42,7 @@ export class Client {
 
     constructor(props: ClientProps) {
         this.#apiKey = props.apiKey
-        this.#urlEndpoint = props.urlEndpoint
+        this.#urlEndpoint = props.urlEndpoint ?? DefaultEndpoint
     }
 
     async track({ properties: data, ...props }: TrackProps) {

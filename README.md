@@ -40,19 +40,28 @@ Then you can initialize the library:
 // Node
 const client = new Client({
     apiKey: "XXX-XXX",
-    urlEndpoint: "https://app.lunogram.com/api"
 })
 
 // Browser
 const client = new BrowserClient({
     apiKey: "XXX-XXX",
-    urlEndpoint: "https://app.lunogram.com/api"
 })
 
 // Or global script
 Lunogram.initialize({
     apiKey: "XXX-XXX",
-    urlEndpoint: "https://app.lunogram.com/api"
+    urlEndpoint: "https://uplink.lunogram.com/api"
+})
+```
+
+### Custom url endpoint
+
+You could configure a custom url endpoint when initializing the client.
+
+```typescript
+const client = new Client({
+    apiKey: "XXX-XXX",
+
 })
 ```
 
