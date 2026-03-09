@@ -13,20 +13,27 @@ export class Lunogram {
         Lunogram.instance = new BrowserClient(props)
     }
 
+    static get #client(): BrowserClient {
+        if (!Lunogram.instance) {
+            throw new Error('Lunogram: SDK must be initialized with .initialize(props) before use.')
+        }
+        return Lunogram.instance
+    }
+
     static async track(props: TrackProps) {
-        return await Lunogram.instance?.track(props)
+        return await Lunogram.#client.track(props)
     }
 
     static async events(props: EventProps[]) {
-        return await Lunogram.instance?.events(props)
+        return await Lunogram.#client.events(props)
     }
 
     static async identify(props: IdentifyProps) {
-        return await Lunogram.instance?.identify(props)
+        return await Lunogram.#client.identify(props)
     }
 
     static async alias(props: AliasProps) {
-        return await Lunogram.instance?.alias(props)
+        return await Lunogram.#client.alias(props)
     }
 }
 

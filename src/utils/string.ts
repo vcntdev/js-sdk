@@ -2,14 +2,31 @@ import { JSONValue } from '../types'
 
 export const camelToUnderscore = (key: string) => key.replace(/([A-Z])/g, "_$1").toLowerCase()
 
+export function mapKeys(value: Record<string, JSONValue>): Record<string, JSONValue>
+export function mapKeys(value: Record<string, JSONValue>[]): Record<string, JSONValue>[]
+export function mapKeys(value: Record<string, JSONValue> | Record<string, JSONValue>[]): Record<string, JSONValue> | Record<string, JSONValue>[]
 export function mapKeys(value: Record<string, JSONValue> | Record<string, JSONValue>[]): Record<string, JSONValue> | Record<string, JSONValue>[] {
     if (Array.isArray(value)) {
-        return value.map((item) => mapKeys(item)) as Record<string, JSONValue>[]
+        return value.map((item) => mapKeys(item))
     }
 
     const newObj: Record<string, JSONValue> = {}
     for (const key in value) {
-        newObj[camelToUnderscore(key)] = value[key]
+        const transformedKey = camelToUnderscore(key)
+        const val = value[key]
+
+        if (val !== null && typeof val === 'object' && !Array.isArray(val)) {
+            newObj[transformedKey] = mapKeys(val as Record<string, JSONValue>)
+        } else if (Array.isArray(val)) {
+            newObj[transformedKey] = val.map((item) => {
+                if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+                    return mapKeys(item as Record<string, JSONValue>)
+                }
+                return item
+            })
+        } else {
+            newObj[transformedKey] = val
+        }
     }
 
     return newObj

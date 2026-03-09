@@ -1,4 +1,4 @@
-import { ClientProps, TrackProps, EventProps, IdentifyProps, AliasProps, JSONValue } from '../types'
+import { ClientProps, TrackProps, EventProps, IdentifyProps, AliasProps, InternalPayload } from '../types'
 import { DefaultEndpoint } from './constants'
 import { mapKeys } from '../utils'
 
@@ -16,7 +16,12 @@ export class Client {
     }
 
     async events(props: EventProps[]) {
-        return await this.#request('events', props.map(({ properties: data, ...rest }) => ({ ...rest, data } as Record<string, JSONValue>)))
+        const payload: InternalPayload[] = props.map(({ properties: data, ...rest }) => ({
+            ...rest,
+            data: data ?? {},
+        }))
+
+        return await this.#request('events', payload)
     }
 
     async identify({ traits: data, ...props }: IdentifyProps) {
@@ -24,18 +29,34 @@ export class Client {
     }
 
     async alias(props: AliasProps) {
-        return await this.#request('identify', props)
+        const payload: InternalPayload = {
+            anonymousId: props.anonymousId,
+            externalId: props.externalId,
+        }
+
+        return await this.#request('identify', payload)
     }
 
-    async #request(path: string, data: Record<string, JSONValue> | Record<string, JSONValue>[]) {
-        const request = await fetch(`${this.#urlEndpoint}/client/${path}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.#apiKey}`,
-            },
-            body: JSON.stringify(mapKeys(data)),
-        })
-        return await request.text()
+    async #request(path: string, data: InternalPayload | InternalPayload[]) {
+        try {
+            const response = await fetch(`${this.#urlEndpoint}/client/${path}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.#apiKey}`,
+                },
+                body: JSON.stringify(mapKeys(data)),
+            })
+
+            if (!response.ok) {
+                const errorBody = await response.text().catch(() => 'Unknown error body')
+                throw new Error(`Request failed with status ${response.status}: ${errorBody}`)
+            }
+
+            return await response.text()
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown error'
+            throw new Error(`Lunogram: Network request failed: ${message}`)
+        }
     }
 }

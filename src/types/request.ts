@@ -28,3 +28,5 @@ export type AliasProps = {
     anonymousId: string
     externalId: string
 }
+
+export type InternalPayload = Record<string, JSONValue>
