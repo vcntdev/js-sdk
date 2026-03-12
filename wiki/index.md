@@ -25,10 +25,13 @@ const lunogram = new Lunogram('your-api-key')
 
 // User operations
 await lunogram.user.upsert({ email: 'user@example.com' })
-await lunogram.user.events([{ name: 'user.signed_up', data: { plan: 'free' } }])
+await lunogram.user.postEvents([{ name: 'user.signed_up', data: { plan: 'free' } }])
 
 // Organization operations  
 await lunogram.organization.upsert({ externalId: 'org-123', name: 'Acme' })
+await lunogram.organization.addUser({ organizationExternalId: 'org-123', userExternalId: 'user-456' })
+await lunogram.organization.removeUser({ organizationExternalId: 'org-123', userExternalId: 'user-456' })
+await lunogram.organization.postEvents([{ organizationExternalId: 'org-123', name: 'org.upgraded', data: { plan: 'enterprise' } }])
 ```
 
 For detailed parameter definitions, see the [Live API Documentation](https://console.lab.lunogram.io/api#client).

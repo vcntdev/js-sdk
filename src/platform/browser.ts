@@ -6,7 +6,6 @@ import { HttpHandler } from '../core/http'
 import {
     UpsertUserRequest,
     DeleteUserRequest,
-    UserEvent,
 } from '../types'
 
 class BrowserUserResource extends UserResource {
@@ -35,11 +34,6 @@ class BrowserUserResource extends UserResource {
     async delete(data: DeleteUserRequest) {
         const injected = this.#injectIds(data)
         return super.delete(injected)
-    }
-
-    async events(data: UserEvent[]) {
-        const injected = data.map(event => this.#injectIds(event))
-        return super.events(injected)
     }
 
     get anonymousId() {

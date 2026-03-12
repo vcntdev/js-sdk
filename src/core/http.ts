@@ -1,4 +1,4 @@
-import { JSONValue, ClientProps } from '../types'
+import { ClientProps } from '../types'
 import { mapKeys } from '../utils'
 import { DefaultEndpoint } from './constants'
 import {
@@ -27,19 +27,19 @@ export class HttpHandler {
         this.#baseUrl = props.urlEndpoint ?? DefaultEndpoint
     }
 
-    async get<T = unknown>(path: string, data?: Record<string, JSONValue>): Promise<T> {
+    async get<T = unknown>(path: string, data?: unknown): Promise<T> {
         return this.#request<T>('GET', path, data)
     }
 
-    async post<T = unknown>(path: string, data?: JSONValue): Promise<T> {
+    async post<T = unknown>(path: string, data?: unknown): Promise<T> {
         return this.#request<T>('POST', path, data)
     }
 
-    async delete<T = unknown>(path: string, data?: Record<string, JSONValue>): Promise<T> {
+    async delete<T = unknown>(path: string, data?: unknown): Promise<T> {
         return this.#request<T>('DELETE', path, data)
     }
 
-    async #request<T>(method: HttpMethod, path: string, data?: JSONValue): Promise<T> {
+    async #request<T>(method: HttpMethod, path: string, data?: unknown): Promise<T> {
         const url = `${this.#baseUrl}/client/${path}`
 
         try {
