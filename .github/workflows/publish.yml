@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: ${{ vars.NODEJS_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
           registry-url: https://registry.npmjs.org
       - name: Sync package.json version with tag
         run: |
@@ -35,8 +35,6 @@ jobs:
           pnpm run build
           pnpm pack
       - name: Publish to npmjs
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm run release:npm
   release-github:
     name: "Release Github Packages"
@@ -53,9 +51,9 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: ${{ vars.NODEJS_VERSION }}
-          cache: 'pnpm'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@zwolly'
+          cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@zwolly"
       - name: Sync package.json version with tag
         run: |
           VERSION=${GITHUB_REF_NAME#v}
