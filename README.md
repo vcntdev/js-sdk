@@ -1,108 +1,76 @@
 # Lunogram JS SDK
 
-## Installation
-To install the SDK, use Yarn, npm, or a script tag:
+A type-safe JavaScript SDK for collecting events and managing users/organizations.
 
-- npm
+## Features
+
+- **TypeScript First** — Full type safety with exported types
+- **Namespaced API** — Organized `client.user.*` and `client.organization.*` methods
+- **Extensible** — Factory pattern makes adding new API resources trivial
+- **Error Handling** — Hierarchical error classes for granular error handling
+- **Browser Ready** — Auto-injects `anonymousId`/`externalId` in browser environments
+
+## Installation
+
 ```
 npm install @lunogram/js-sdk
 ```
 
-- Yarn
-```
-yarn add @lunogram/js-sdk
-```
+## Quick Start
 
-script tag
+```typescript
+import { Lunogram } from '@lunogram/js-sdk'
 
-```
-<script src="https://unpkg.com/@lunogram/js-sdk/lib/esm/index.js"></script>
+const lunogram = new Lunogram('your-api-key')
+
+// User operations
+await lunogram.user.upsert({ email: 'user@example.com' })
+await lunogram.user.events([{ name: 'user.signed_up', data: { plan: 'free' } }])
+
+// Organization operations
+await lunogram.organization.upsert({ externalId: 'org-123', name: 'Acme' })
 ```
 
 ## Usage
-The SDK can be used both on the server or in the web browser. The main difference is that on the Browser the identified user will be cached vs in Node where you'll need to pass in identifiers on every request.
 
-### Initialize
-Before using any methods, the library must be initialized with an API key and URL endpoint.
+### Browser
 
-If you aren't accessing the SDK via script tag, start by importing the Lunogram SDK:
+The SDK automatically generates and persists an `anonymousId` for each user.
+
 ```typescript
+import { BrowserClient } from '@lunogram/js-sdk'
 
-// 
-const { Client /** or BrowserClient */ } = require('@lunogram/js-sdk')
+const client = new BrowserClient({ apiKey: 'your-api-key' })
 
-// Or
-import { Client /** or BrowserClient */ } from '@lunogram/js-sdk'
+// anonymousId is auto-generated
+client.user.anonymousId
+
+await client.user.upsert({ externalId: 'user-123', email: 'user@example.com' })
+await client.user.events([{ name: 'user.signed_up', data: {} }])
+
+// externalId is set after upsert
+client.user.externalId // 'user-123'
 ```
 
-Then you can initialize the library:
+The SDK is also exposed on `window.Lunogram`:
+
+```html
+<script>
+    const lunogram = new Lunogram('your-api-key')
+    lunogram.user.events([{ name: 'user.signed_up', data: {} }])
+</script>
+```
+
+### Server
+
 ```typescript
-// Node
+import { Client } from '@lunogram/js-sdk'
+
 const client = new Client({
-    apiKey: "XXX-XXX",
+    apiKey: 'your-api-key',
+    urlEndpoint: 'https://your-api.com/api' // optional
 })
 
-// Browser
-const client = new BrowserClient({
-    apiKey: "XXX-XXX",
-})
-
-// Or global script
-Lunogram.initialize({
-    apiKey: "XXX-XXX",
-    urlEndpoint: "https://uplink.lunogram.com/api"
-})
-```
-
-### Custom url endpoint
-
-You could configure a custom url endpoint when initializing the client.
-
-```typescript
-const client = new Client({
-    apiKey: "XXX-XXX",
-
-})
-```
-
-### Identify
-You can handle the user identity of your users by using the `identify` method. This method works in combination to either/or associate a given user to your internal user ID (`external_id`) or to associate attributes (traits) to the user. By default all events and traits are associated with an anonymous ID until a user is identified with an `external_id`. From that point moving forward, all updates to the user and events will be associated to your provider identifier.
-```typescript
-
-// Client
-client.identify({
-    externalId: "XXX-XXX"
-    phone: "+1234567890"
-    email: "email@email.com"
-    traits: {}
-})
-
-// Or global script
-Lunogram.identify({
-    externalId: "XXX-XXX"
-    phone: "+1234567890"
-    email: "email@email.com"
-    traits: {}
-})
-```
-
-### Events
-If you want to trigger a journey and list updates off of things a user does within your app, you can pass up those events by using the `track` method.
-```typescript
-
-// Client
-client.track({
-    event: "Tapped Button"
-    traits: {
-        "Key": "Value"
-    }
-})
-
-// Or global script
-Lunogram.track({
-    event: "Tapped Button",
-    traits: {
-        "Key": "Value"
-    }
-})
+await client.user.upsert({ externalId: 'user-123', email: 'user@example.com' })
+await client.organization.upsert({ externalId: 'org-456', name: 'Acme Corp' })
 ```
