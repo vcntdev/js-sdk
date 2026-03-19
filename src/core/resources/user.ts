@@ -31,7 +31,7 @@ export class UserResource extends BaseResource {
      * @param data - Array of user events to post
      * @returns Promise resolving to the API response
      */
-    async postEvents(data: UserEvent[]) {
+    async events(data: UserEvent[]) {
         return this.post(data, 'users/events')
     }
 }

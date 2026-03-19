@@ -51,7 +51,7 @@ export class OrganizationResource extends BaseResource {
      * @param data - Array of organization events to post
      * @returns Promise resolving to the API response
      */
-    async postEvents(data: OrganizationEvent[]) {
+    async events(data: OrganizationEvent[]) {
         return this.post(data, 'organizations/events')
     }
 }
